@@ -17,7 +17,7 @@
 set_time_limit(0);
 ini_set('register_globals', 'on');
 error_reporting(E_ALL & ~E_NOTICE);
-require_once './php-cloudfiles-1.3.0/cloudfiles.php';
+require_once './php-cloudfiles/cloudfiles.php';
 
 // validate arguments
 $user = $_GET['-u'];
