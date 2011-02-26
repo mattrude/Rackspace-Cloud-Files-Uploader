@@ -2,9 +2,9 @@
 
 Installing
 ==========
-`git submodule init
+git submodule init
 
-git submodule update`
+git submodule update
 
 Usage
 =====
