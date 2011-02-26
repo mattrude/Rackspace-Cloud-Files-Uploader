@@ -3,8 +3,9 @@
 Installing
 ==========
 `git submodule init`
+
 `git submodule update`
 
 Usage
 =====
-* usage: scp-cloudfiles -u=<user> -k=<api_key> -c=<container> -p=<path>
+usage: `./scp-cloudfiles.sh.php -u=<user> -k=<api_key> -c=<container> -p=<path>`
