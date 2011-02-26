@@ -79,9 +79,9 @@ try {
   $container = $conn->get_container($container_name);
 }
 catch (Exception $e) {
-  out('Fail! Container does not exist!');
-//  out('Attempting to automatically create new remote Container...', FALSE);
-//  $container = $conn->create_container($container_name);
+//  out('Fail! Container does not exist!');
+  out('Container dose not exist, Attempting to automatically create new remote Container...', FALSE);
+  $container = $conn->create_container($container_name);
 }
 out('Done.');
 
