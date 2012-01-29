@@ -55,7 +55,8 @@ function out($s = '', $lb = TRUE) {
 #       cURL's web site (http://curl.haxx.se).  To use the newer CA bundle,
 #       call the CF_Authentication instance's 'ssl_use_cabundle()' method.
 #
-out(sprintf('Initializing new CF_Authentication as "%s" / "%s"...', $user, $api_key), FALSE);
+$key = sprintf("%s****%s", substr($api_key, 0, 3), substr($api_key, strlen($api_key) - 3, 3));
+out(sprintf('Initializing new CF_Authentication as "%s" / "%s"...', $user, $key), FALSE);
 $auth = new CF_Authentication($user, $api_key);
 out('Done.');
 
