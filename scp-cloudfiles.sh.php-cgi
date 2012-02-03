@@ -1,4 +1,4 @@
-#!/usr/bin/php -q 
+#!/usr/bin/php-cgi -q 
 <?php
 
 /**
@@ -20,13 +20,10 @@ error_reporting(E_ALL & ~E_NOTICE);
 require_once dirname(__FILE__) . '/php-cloudfiles/cloudfiles.php';
 
 // validate arguments
-$args = array('-u' => 'user', '-k' => 'api_key', '-c' => 'container_name', '-p' => 'path');
-foreach ($argv as $arg) {
-	$arg = explode('=', $arg);
-	if (is_array($arg)) {
-		${$args[$arg[0]]} = $arg[1];
-	}
-}
+$user = $_GET['-u'];
+$api_key = $_GET['-k'];
+$container_name = $_GET['-c'];
+$path = $_GET['-p'];
 if (empty($user) || empty($api_key) || empty($container_name) || empty($path)) {
   echo <<<TEXT
 usage: scp-cloudfiles -u=<user> -k=<api_key> -c=<container> -p=<path>
