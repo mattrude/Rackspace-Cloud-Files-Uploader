@@ -17,7 +17,7 @@
 set_time_limit(0);
 ini_set('register_globals', 'on');
 error_reporting(E_ALL & ~E_NOTICE);
-require_once './php-cloudfiles/cloudfiles.php';
+require_once dirname(__FILE__) . '/php-cloudfiles/cloudfiles.php';
 
 // validate arguments
 $args = array('-u' => 'user', '-k' => 'api_key', '-c' => 'container_name', '-p' => 'path');
