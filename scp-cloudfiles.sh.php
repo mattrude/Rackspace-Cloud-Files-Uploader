@@ -1,4 +1,4 @@
-#!/usr/bin/php -q 
+#!/usr/bin/php
 <?php
 
 /**
@@ -15,7 +15,7 @@
 
 // initialize
 set_time_limit(0);
-ini_set('register_globals', 'on');
+// ini_set('register_globals', 'on');
 error_reporting(E_ALL & ~E_NOTICE);
 require_once dirname(__FILE__) . '/php-cloudfiles/cloudfiles.php';
 
@@ -47,7 +47,7 @@ TEXT;
  */
 function out($s = '', $lb = TRUE) {
   echo $s . ($lb? "\n" : '');
-  ob_flush();
+  flush();
 }
 
 # Authenticate to Cloud Files.  The default is to automatically try
@@ -104,13 +104,26 @@ if (is_dir($path)) {
         else {
           $file = $_path;
           $object_name = ltrim(str_replace($path, '', $file), '/');
-          
+          $exists = false;
+          $changed = false;
           
           try {
-            $exists = $container->get_object($object_name);
-            out(sprintf('File "%s" exists',$object_name));
+            $object = $container->get_object($object_name);
+            // var_dump($object);
+            $exists = true;
+
+            // check if it's the same file or it's been changed.
+            // a better solution would be to hash the file (eg: md5)
+            // however I'm unaware if rackspace provides you with
+            // hashes of the objects, and this works fine for me now.
+            if ($object->content_length!=filesize($file) || strtotime($object->last_modified)<filemtime($file)) {
+              $changed = true;
+            }
           } catch (Exception $e) {
-            //out(sprintf('File "%s" DOES NOT exist ... ',$object_name), FALSE);
+            $exists = false;
+          }
+
+          if (!$exists || $changed) {
             out(sprintf('Uploading file "%s"...', $object_name), FALSE);
             try {
                 $object = $container->create_object($object_name);
@@ -123,14 +136,24 @@ if (is_dir($path)) {
                 out('object->load_from_filename $file Exception: '.$e);
             }
             out('Done.');
-          }
+          } // end uploading a file
+
+          else {
+            out(sprintf('File "%s" exists and unchanged',$object_name));
+          } 
          
-        unset($object);          
-        }
-      }
+          unset($object);          
+
+        } // end handling of a file
+
+      } // end looping through files in this directory
+
       closedir($dh);
-    }
-  }
-}
+
+    } // end successfully opening the directory for reading
+
+  } // end while there are still directories left to scan
+
+} // end check for directory
 
 exit(0);
